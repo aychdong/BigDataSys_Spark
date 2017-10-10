@@ -32,6 +32,8 @@ https://spark.apache.org/docs/latest/submitting-applications.html
 
 hdfs dfs -stat %r [%o] /enwiki-20110115-pages-articles1.xml
 
+hdfs dfs -setrep -w 2 -R /test.xml
+
 hdfs dfs -D dfs.block.size=67108864 -put /proj/michigan-bigdata-PG0/assignments/assignment1/enwiki-20110115-pages-articles1.xml /
 
 
