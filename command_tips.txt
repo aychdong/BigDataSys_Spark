@@ -1,0 +1,40 @@
+export PATH=$PATH:/users/dongchen/hadoop-2.7.4/bin
+export HADOOP_CONF_DIR=/users/dongchen/hadoop-2.7.4/etc/hadoop
+
+export JAVA_HOME=/proj/michigan-bigdata-PG0/jdk1.8.0_144
+
+sudo mkdir -p /new_disk/hdfs_dir/datanode
+
+sudo mkdir -p /new_disk/hdfs_dir/namenode
+
+sudo mkdir -p /new_disk/hdfs_dir/tmp
+
+sudo chown dongchen:root -R /new_disk/hdfs_dir/
+
+
+echo "spark.driver.extraClassPath users/dongchen/alluxio-1.5.0-hadoop-2.7/client/spark/alluxio-1.5.0-spark-client.jar" >> !$
+
+echo "spark.executor.extraClassPath users/dongchen/alluxio-1.5.0-hadoop-2.7/client/spark/alluxio-1.5.0-spark-client.jar" >> !$
+
+~/spark-2.2.0-bin-hadoop2.7/bin/spark-submit --packages com.databricks:spark-xml_2.11:0.4.1 --class wiki --master local[*] --driver-memory=5G target/scala-2.11/wiki_2.11-1.0.jar
+
+ if you want to perform a method on each row of a dataframe you have two options:
+
+    create a udf, with sqlContext.udf.regster("udfName", /* your scala function */ )
+    do dfGrp.rdd.map( row => /* your scala function*/ )
+
+https://spark.apache.org/docs/latest/submitting-applications.html
+
+// locally
+~/spark-2.2.0-bin-hadoop2.7/bin/spark-submit --packages com.databricks:spark-xml_2.11:0.4.1 --class wiki --master local[4] --driver-memory=1G target/scala-2.11/wiki_2.11-1.0.jar
+// cluster
+~/spark-2.2.0-bin-hadoop2.7/bin/spark-submit --packages com.databricks:spark-xml_2.11:0.4.1 --class wiki --master spark://c220g1-030627.wisc.cloudlab.us:7077 --driver-memory=1G --executor-memory=5G target/scala-2.11/wiki_2.11-1.0.jar
+
+hdfs dfs -stat %r [%o] /enwiki-20110115-pages-articles1.xml
+
+hdfs dfs -D dfs.block.size=67108864 -put /proj/michigan-bigdata-PG0/assignments/assignment1/enwiki-20110115-pages-articles1.xml /
+
+
+
+
+
