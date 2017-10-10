@@ -36,7 +36,29 @@ hdfs dfs -setrep -w 2 -R /test.xml
 
 hdfs dfs -D dfs.block.size=67108864 -put /proj/michigan-bigdata-PG0/assignments/assignment1/enwiki-20110115-pages-articles1.xml /
 
+val links = file.map{ s =>
+    val parts = s.split("\t")
+    (parts(0), parts(1))
+}.distinct().groupByKey().cache()
+
+case x if (x.length>1) x(1)
+
+val links = file.map{ s =>
+    val parts = s.split("\t")
+    if (parts.length>1)(parts(0), parts(1))
+    else (parts(0), parts(0))
+}.distinct().groupByKey().cache()
+
+val links = file.filter{tmp=>tmp.contains("\t")}.map{ s =>
+    val parts = s.split("\t")
+    if (parts.length>1)(parts(0), parts(1))
+    else (parts(0), parts(0))
+}.distinct().groupByKey().cache()
 
 
+val links = file.filter{tmp => tmp.contains("\t") && (tmp.split("\t").length > 1)}.map{ s =>
+    val parts = s.split("\t")
+    (parts(0), parts(1))
+}.distinct().groupByKey().cache()
 
 
