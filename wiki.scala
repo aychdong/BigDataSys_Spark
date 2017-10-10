@@ -1,3 +1,4 @@
+
 import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.SparkConf
@@ -26,3 +27,4 @@ val final_res = exploded.select("title", "newClo")
 final_res.write.format("com.databricks.spark.csv").option("header", "false").option("delimiter","\t").mode("overwrite").save("/sb_q3.csv")
 }
 }
+
