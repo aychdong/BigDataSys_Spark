@@ -11,7 +11,7 @@ def main(args: Array[String]): Unit={
 val spark_master_url = "spark://c220g1-030627.wisc.cloudlab.us:7077"
 val username = "dongchen"
 
-val config = new SparkConf().setAppName("wiki").setMaster(spark_master_url)
+val config = new SparkConf().setAppName("wiki").setMaster("local[4]")
 val sc = new SparkContext(config)
 val sqlContext = new SQLContext(sc)
 val df = sqlContext.read.format("com.databricks.spark.xml").option("rowTag", "page").load("/enwiki-20110115-pages-articles1.xml")

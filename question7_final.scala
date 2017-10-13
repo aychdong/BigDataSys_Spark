@@ -12,15 +12,15 @@ import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.streaming.Trigger
 import scala.concurrent.duration._
 
-object pageRank{
+object wiki{
 def main(args: Array[String]): Unit={
 	//val spark_master_url = "spark://c220g1-030627.wisc.cloudlab.us:7077"
 	val username = "dongchen"
 
-	val config = new SparkConf().setAppName("pageRank").setMaster(local[4])
+	val config = new SparkConf().setAppName("pageRank").setMaster("local[4]")
 	val sc = new SparkContext(config)
 
-	val file = sc.textFile("/sb1.csv")
+	val file = sc.textFile("file:///users/dongchen/sb_1.csv")
     val links = file.filter{tmp => tmp.contains("\t") && (tmp.split("\t").length > 1)}.map{ s =>
         val parts = s.split("\t")
         (parts(0), parts(1))
@@ -36,10 +36,10 @@ def main(args: Array[String]): Unit={
     }
 
     val output = ranks.collect()
- 
+/*
     val pw = new PrintWriter(new File("~/pageRank.txt"))
     output.foreach(tup => pw.write(tup._1 + "\t" + tup._2 + "\n"))
-
-//ranks.saveAsTextFile("hdfs://c220g2-011316.wisc.cloudlab.us:8020/pageRank.txt")
+*/
+ranks.saveAsTextFile("file:///users/dongchen/pageRank.txt")
 }
 }
